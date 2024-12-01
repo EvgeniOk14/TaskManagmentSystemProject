@@ -1,0 +1,31 @@
+                                                                                              
+Cписок путей всех кнтроллеров приложения (Конечные точки(endPoints)): 
+
+1)  localhost:8080/auth/login   - Аутентифицирует пользователя и возвращает JWT токен.   
+2)  localhost:8080/authz/checkAccess - Проверяет права доступа пользователя, основываясь на его JWT токене.  
+3)  localhost:8080/api/comments/{taskId}/createComment - Создает новый комментарий для задачи с указанным идентификатором.
+4)  localhost:8080/api/comments/{taskId}/getAllComments - Получает все комментарии для задачи с указанным идентификатором.
+5)  localhost:8080/api/comments/{commentId}/updateCommentById - Обновляет комментарий с указанным идентификатором.
+6)  localhost:8080/api/comments/{commentId}/delete - Удаляет комментарий с указанным идентификатором.
+7)  localhost:8080/api/comments/{commentId}/getComment - Получает комментарий с указанным идентификатором. 
+8)  localhost:8080/api/tasks/create - Создает новую задачу.
+9)  localhost:8080/api/tasks/getTask/{id} - Получает задачу по её идентификатору.
+10) localhost:8080/api/tasks/update/{id} - Обновляет задачу по её идентификатору.
+11) localhost:8080/api/tasks/delete/{id} - Удаляет задачу по её идентификатору.
+12) localhost:8080/api/tasks/pagination - Получает список задач с фильтрацией и пагинацией.
+13) localhost:8080/api/tasks/my-tasks - Получает задачи текущего пользователя в зависимости от его роли (автор или исполнитель).
+14) localhost:8080/api/tasks/my-tasks/author-and-executor - Получает задачи, где текущий пользователь является и автором, и исполнителем.
+15) localhost:8080/api/tasks/{id}/setStatus - Устанавливает статус задачи.
+16) localhost:8080/api/tasks/{id}/setPriority - Устанавливает приоритет задачи.
+17) localhost:8080/api/tasks/{executorId}/{taskId}/setExecutorToTask - Назначает исполнителя задаче.
+18) localhost:8080/api/tasks/{authorId}/{taskId}/setAuthorToTask - Назначает автора задаче.                               
+19) localhost:8080/api/users/createUser - Создает нового пользователя в системе.
+20) localhost:8080/api/users/{id} - Получает информацию о пользователе по его идентификатору.
+21) localhost:8080/api/users/updateUser/{id} - Обновляет информацию о пользователе по его идентификатору.
+
+curl http://localhost:8080/v3/api-docs -o openapi.json   <---- создаст документацию - файл openapi.json
+
+// http://localhost:8080/swagger-ui/index.html  <--- доступ к swagger в браузере
+// http://localhost:8080/v3/api-docs <--- доступ к документации в браузере
+
+

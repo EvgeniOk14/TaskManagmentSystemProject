@@ -1,0 +1,41 @@
+update
+{
+  "email": "admin@mail.ru",
+  "userRole": "USER_ROLE",
+  "createdTasks": null,
+  "assignedTasks": null
+}
+
+
+create
+{
+  "email": "admin@mail.ru",
+  "password": "admin",
+  "userRole": "ADMIN_ROLE" 
+}
+
+auth
+{
+  "email": "admin@mail.ru",
+  "password": "admin"
+}
+
+user
+{
+  "email": "user1@mail.ru",
+  "password": "user1"
+}
+
+
+updateметод обновления задачи
+{
+  "title": "Новая задача на сегодня",  
+  "priority": "MEDIUM",  
+  "status": "IN_PROGRESS",
+  "description": "Описание задачи"
+}
+
+curl http://localhost:8080/v3/api-docs -o openapi.json   <---- создаст документацию - файл openapi.json
+
+// http://localhost:8080/swagger-ui/index.html  <--- доступ к swagger в браузере
+// http://localhost:8080/v3/api-docs <--- доступ к документации в браузере
