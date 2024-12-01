@@ -213,7 +213,16 @@ public class UserService
 
             updatedUser.setEmail(userDTO.getEmail()); // Обновляем email пользователя на новое значение из DTO.
 
-            updatedUser.setUserRole(UserRole.valueOf(userDTO.getUserRole())); // Обновляем роль пользователя на новую, преобразуя строку в перечисление UserRole.
+
+            if(userDTO.getUserRole() != null && !userDTO.getUserRole().isEmpty())
+            {
+                updatedUser.setUserRole(UserRole.valueOf(userDTO.getUserRole())); // Обновляем роль пользователя на новую, преобразуя строку в перечисление UserRole.
+            }
+            else
+            {
+                updatedUser.setUserRole(updatedUser.getUserRole()); // оставляем роль прежней
+            }
+
 
             // Если список созданных задач не равен null, то обрабатываем его.
             if (userDTO.getCreatedTasks() != null)

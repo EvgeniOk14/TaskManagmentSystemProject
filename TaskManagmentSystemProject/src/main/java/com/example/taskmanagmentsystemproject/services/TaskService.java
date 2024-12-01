@@ -128,7 +128,7 @@ public class TaskService
 
             return taskDTO; // Возвращаем созданную задачу.
         }
-        catch (DataAccessException ex) // Обрабатываем ошибки при работе с базой данных.
+        catch (TaskNotSaveExсeption ex) // Обрабатываем ошибки при работе с базой данных.
         {
             throw new TaskNotSaveExсeption("Не удалось сохранить задачу в базу данных.");
         }
