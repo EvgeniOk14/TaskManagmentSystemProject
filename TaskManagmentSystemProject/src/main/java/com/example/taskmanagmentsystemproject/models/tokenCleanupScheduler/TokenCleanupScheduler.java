@@ -38,7 +38,8 @@ public class TokenCleanupScheduler
      *
      * @param jwtTokenService объект сервиса для управления JWT токенами.
      */
-    public TokenCleanupScheduler(JwtTokenService jwtTokenService) {
+    public TokenCleanupScheduler(JwtTokenService jwtTokenService)
+    {
         this.jwtTokenService = jwtTokenService; // Инициализируем зависимость jwtTokenService.
     }
     //endRegion
