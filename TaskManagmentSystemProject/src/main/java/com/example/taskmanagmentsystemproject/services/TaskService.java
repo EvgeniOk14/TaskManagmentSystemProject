@@ -11,7 +11,6 @@ import com.example.taskmanagmentsystemproject.models.task.TaskStatus;
 import com.example.taskmanagmentsystemproject.models.transformer.GenericTransformer;
 import com.example.taskmanagmentsystemproject.models.user.User;
 import com.example.taskmanagmentsystemproject.repository.TaskRepository;
-import org.springframework.dao.DataAccessException;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageImpl;
 import org.springframework.data.domain.PageRequest;

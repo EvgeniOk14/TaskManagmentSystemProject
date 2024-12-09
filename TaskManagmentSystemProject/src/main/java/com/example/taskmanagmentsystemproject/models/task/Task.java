@@ -3,7 +3,6 @@ package com.example.taskmanagmentsystemproject.models.task;
 import com.example.taskmanagmentsystemproject.models.comment.Comment;
 import com.example.taskmanagmentsystemproject.models.user.User;
 import com.fasterxml.jackson.annotation.JsonIgnore;
-import com.fasterxml.jackson.annotation.JsonManagedReference;
 import jakarta.persistence.*;
 import jakarta.validation.constraints.NotEmpty;
 import jakarta.validation.constraints.NotNull;
