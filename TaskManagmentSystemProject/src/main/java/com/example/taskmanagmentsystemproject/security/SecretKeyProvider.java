@@ -25,8 +25,8 @@ import io.jsonwebtoken.security.Keys;
  *
  * Методы:
  * - {@link #loadOrGenerateSecretKey()}: Загружает или генерирует секретный ключ.
- * - {@link #getSecretKey()}: Возвращает текущий секретный ключ.
- * - {@link #setSecretKey(String)}: Устанавливает новый секретный ключ.
+ * - {@link #getSecretKeyFromSecretKeyProvider()}: Возвращает текущий секретный ключ.
+ * - {@link #setSecretKeyFromSecretKeyProvider(String)}: Устанавливает новый секретный ключ.
  *
  * Исключения:
  * - {@link TokenNotSaveException}: кастомное исключение, обрабатываемое на глобальном уровне, в случае, если токен не может быть сохранён в базу данных MongoDB.
@@ -71,49 +71,51 @@ public class SecretKeyProvider
         {
             // Проверяем, существует ли уже секретный ключ в базе данных
             JwtToken jwtToken = mongoTemplate.findOne(
-                    Query.query(Criteria.where("id").is(SECRET_KEY_ID)),  // Ищем документ с конкретным ID
+                    Query.query(Criteria.where("id").is(SECRET_KEY_ID)),  // Ищем документ (объект класса JwtToken, это запись в базе данных MongoDb в коллекции tokens) с конкретным ID равным SECRET_KEY_ID
                     JwtToken.class);  // Тип документа - JwtToken
 
-            if (jwtToken != null) // Если ключ существует в базе данных, то:
+            if (jwtToken != null) // Если такой объект существует в базе данных, то:
             {
-                return jwtToken.getSecretKey();  // Возвращаем существующий секретный ключ
+                return jwtToken.getSecretKey();  // Возвращаем полученное у данного объекта поле - существующий секретный ключ
             }
-            else // Если ключ не найден, генерируем новый секретный ключ, то:
+            else // Если объект не найден в базе данных, генерируем новый секретный ключ:
             {
-                byte[] keyBytes = Keys.secretKeyFor(SignatureAlgorithm.HS512).getEncoded();  // Генерация нового ключа
+                byte[] keyBytes = Keys.secretKeyFor(SignatureAlgorithm.HS512).getEncoded();  // Генерация нового ключа (Keys — это класс из библиотеки io.jsonwebtoken, который предоставляет статические методы для создания секретных ключей. secretKeyFor(SignatureAlgorithm.HS512) — это метод, который генерирует новый секретный ключ для использования с указанным алгоритмом подписи, алгоритм HS512, который является вариантом HMAC (Hash-based Message Authentication Code) с длиной хэширования 512 бит. Метод getEncoded() вызывается на объекте SecretKey, чтобы получить байтовое представление ключа.)
                 String newSecretKey = Base64.getEncoder().encodeToString(keyBytes);  // Преобразуем ключ в строку Base64
 
                 JwtToken newJwtToken = new JwtToken(); // Создаем новый объект JwtToken
-                newJwtToken.setId(SECRET_KEY_ID);  // Устанавливаем уникальный ID для документа
-                newJwtToken.setSecretKey(newSecretKey);  // Устанавливаем сгенерированный ключ
-                mongoTemplate.save(newJwtToken);  // Сохраняем новый ключ в базе данных
+                newJwtToken.setId(SECRET_KEY_ID);  // Устанавливаем для нового документа newJwtToken, в поле id уникальный идентификатор "SECRET_KEY_ID"
+                newJwtToken.setSecretKey(newSecretKey);  // Устанавливаем для нового документа newJwtToken, в поле secretkey - сгенерированный ключ "newSecretKey"
+                mongoTemplate.save(newJwtToken);  // Сохраняем новый объект newJwtToken, с заполненными полями, в базе данных MongoDb в коллекции tokens
 
-                return newSecretKey;  // Возвращаем новый секретный ключ
+                return newSecretKey;  // Возвращаем новый секретный ключ для шифрования токенов
             }
         }
-        catch (TokenNotSaveException ex) // кастомное исключение, обрабатываемое на глобальном уровне, в случае, если токен не может быть сохранён в базу данных
+        catch (TokenNotSaveException ex) // кастомное исключение, обрабатываемое на глобальном уровне, в случае, если объект JwtToken не может быть сохранён в базу данных MongoDb в коллекции tokens
         {
             throw ex;
         }
     }
 
     /**
-     * Метод getSecretKey:
+     * Метод getSecretKeyFromSecretKeyProvider:
      * Возвращает текущий секретный ключ для JWT.
+     * Используется в классе JwtTokenUtil (который предназначен для работы с JWT токенами), для получения секретного ключа
      *
      * @return строка, представляющая секретный ключ.
      */
-    public String getSecretKey() {
+    public String getSecretKeyFromSecretKeyProvider()
+    {
         return secretKey;  // Возвращаем текущий секретный ключ
     }
 
     /**
-     * Метод setSecretKey:
+     * Метод setSecretKeyFromSecretKeyProvider:
      * Устанавливает новый секретный ключ.
      *
      * @param secretKey строка, представляющая новый секретный ключ.
      */
-    public void setSecretKey(String secretKey)
+    public void setSecretKeyFromSecretKeyProvider(String secretKey)
     {
         this.secretKey = secretKey;  // Устанавливаем новый секретный ключ
     }

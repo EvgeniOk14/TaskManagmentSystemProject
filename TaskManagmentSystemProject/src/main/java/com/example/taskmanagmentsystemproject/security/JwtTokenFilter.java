@@ -54,15 +54,21 @@ public class JwtTokenFilter extends OncePerRequestFilter
 
     //region Methods
     /**
-     * Метод фильтрации запросов.
+     * Метод фильтрации запросов doFilterInternal.
+     * Выполняется для каждого HTTP-запроса.
      * Извлекает JWT токен из заголовка, проверяет его валидность и если токен действителен,
-     * устанавливает аутентификацию пользователя в контексте безопасности.
+     * Устанавливает аутентификацию пользователя в контексте безопасности.
      *
      * @param request  HTTP запрос.
      * @param response HTTP ответ.
      * @param chain     Цепочка фильтров.
      * @throws ServletException если возникает ошибка сервлета.
      * @throws IOException если возникает ошибка ввода/вывода.
+     *
+     * - Заголовок Authorization определен в спецификации HTTP/1.1 (RFC 7235) и является общепринятым способом
+     *   передачи учетных данных для аутентификации.
+     *   пример стандартного заголовка : Authorization: "Bearer <JWT_токен>"
+     *   Bearer: Это схема аутентификации, указывающая, что токен является Bearer токеном.
      */
     @Override
     protected void doFilterInternal(HttpServletRequest request, HttpServletResponse response, FilterChain chain)
@@ -75,7 +81,7 @@ public class JwtTokenFilter extends OncePerRequestFilter
             chain.doFilter(request, response); // пропускаем запрос (передаем управление следующему фильтру в цепочке)
             return;  // выход
         }
-        final String token = header.substring(7); // Извлекаем сам токен
+        final String token = header.substring(7); // Извлекаем сам токен (т.е. начиная с седьмого символа, пропускаем "Bearer ")
 
         try
         {
@@ -89,16 +95,28 @@ public class JwtTokenFilter extends OncePerRequestFilter
 
             if (username != null && SecurityContextHolder.getContext().getAuthentication() == null) // Проверяем, что имя пользователя не пустое и что в контексте безопасности нет аутентификации
             {
-                UserDetails userDetails = userDetailsService.loadUserByUsername(username); // Загружаем детали пользователя по имени из userDetailsService
+                // Загружаем детали пользователя по его имени, из базы данных
+                // (описанного в application.yml) с помощью метода loadUserByUsername интерфейса userDetailsService
+                UserDetails userDetails = userDetailsService.loadUserByUsername(username);
 
-                if (jwtTokenUtil.isTokenValid(token, userDetails)) // Проверяем валидность токена для пользователя
+                if (jwtTokenUtil.isTokenValid(token, userDetails)) // Проверяем валидность токена для пользователя, если токен валиден, то:
                 {
                     // Создаем объект аутентификации:
+                    // создается объект UsernamePasswordAuthenticationToken, который представляет аутентификацию пользователя
+                    //  Этот объект содержит:
+                    // userDetails — детали пользователя, загруженные ранее.
+                    // null — здесь обычно указывается пароль, но он не нужен после успешной аутентификации через токен.
+                    // userDetails.getAuthorities() — роли и привилегии пользователя.
                     UsernamePasswordAuthenticationToken authentication =
                             new UsernamePasswordAuthenticationToken(userDetails, null, userDetails.getAuthorities());
+
+                    // Устанавливаем дополнительные детали аутентификации,
+                    // например, IP-адрес, с которого был отправлен запрос.
+                    // Это может быть полезно для аудита или дополнительной безопасности.
                     authentication.setDetails(new WebAuthenticationDetailsSource().buildDetails(request));
 
-                    SecurityContextHolder.getContext().setAuthentication(authentication); // Устанавливаем аутентификацию в контекст безопасности
+                    // Устанавливаем аутентификацию в контекст безопасности
+                    SecurityContextHolder.getContext().setAuthentication(authentication);
                 }
             }
         }

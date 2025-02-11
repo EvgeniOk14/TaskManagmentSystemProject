@@ -1,6 +1,5 @@
 package com.example.taskmanagmentsystemproject.dto;
 
-import com.example.taskmanagmentsystemproject.models.comment.Comment;
 import com.example.taskmanagmentsystemproject.models.task.TaskPriority;
 import com.example.taskmanagmentsystemproject.models.task.TaskStatus;
 import com.example.taskmanagmentsystemproject.models.user.User;

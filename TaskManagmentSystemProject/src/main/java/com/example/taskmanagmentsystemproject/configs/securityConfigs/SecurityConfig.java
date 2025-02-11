@@ -61,16 +61,31 @@ public class SecurityConfig
     }
     //endRegion
 
+    //region Methods
     /**
+     * Метод securityFilterChain
      * Конфигурация фильтров безопасности и авторизации.
      * Настраивает правила доступа к URL, добавляет JWT фильтр и обрабатывает исключения.
      *
      * @param http HttpSecurity для настройки фильтров.
      * @return SecurityFilterChain конфигурация безопасности.
      * @throws Exception если возникает ошибка настройки безопасности.
+     *
+     *   HttpSecurity — это класс в Spring Security, который предоставляет API для настройки безопасности HTTP-запросов.
+     *   С его помощью настраиваются такие аспекты, как:
+     *      -  Защита от CSRF (Cross-Site Request Forgery)
+     *      -  Настройка авторизации и аутентификации
+     *      -  Настройка фильтров безопасности
+     *      -  Обработка ошибок аутентификации и доступа
+     *      -  Конфигурация CORS (Cross-Origin Resource Sharing)
+     *
+     *  - addFilterBefore - означает, что фильтр будет вызываться перед стандартным фильтром, когда обрабатываются HTTP-запросы.
+     *
+     *  - http.build() создает и возвращает экземпляр SecurityFilterChain конфигурации безопасности
      */
     @Bean // Указывает, что метод создает бин SecurityFilterChain
-    public SecurityFilterChain securityFilterChain(HttpSecurity http) throws Exception {
+    public SecurityFilterChain securityFilterChain(HttpSecurity http) throws Exception
+    {
         http.csrf(csrf -> csrf.disable()) // Отключение защиты CSRF, так как используется JWT
                 .authorizeHttpRequests(auth -> auth // Настройка правил авторизации
                         // Общедоступные эндпоинты
@@ -144,6 +159,7 @@ public class SecurityConfig
     {
         return new BCryptPasswordEncoder(); // Возвращает объект BCryptPasswordEncoder для хеширования паролей
     }
+    //endRegion
 }
 
 

@@ -1,0 +1,15 @@
+Your API Access Key
+
+6646194901d5ff7400ab279852158174
+
+
+https://exchangeratesapi.io.
+
+https://manage.exchangeratesapi.io/dashboard
+
+
+http://localhost:8082/api/exchange-rates  <--- все валюты
+
+http://localhost:8082/api/exchange-rate?currency=USD <--- конкретная валюта
+
+http://localhost:8082/api/exchange-rates?currencies=USD,EUR,GBP  <--- фильтр по валюте

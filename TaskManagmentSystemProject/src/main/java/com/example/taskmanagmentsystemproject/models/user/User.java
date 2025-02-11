@@ -71,7 +71,7 @@ public class User
     @Column(name = "user_email", nullable = false, unique = true)
     @NotEmpty(message = "Email не должен быть пустым.")
     @Email(message = "Введите корректный email.")
-    private String email; // // Поле для хранения email пользователя.
+    private String email; // Поле для хранения email пользователя.
 
     /**
      * Пароль пользователя.
@@ -81,7 +81,7 @@ public class User
     @Column(name = "user_password", nullable = false)
     @NotEmpty(message = "Пароль не должен быть пустым.")
     @Size(min = 5, message = "Пароль должен содержать не менее 5 символов.")
-    private String password; // // Поле для хранения пароля пользователя.
+    private String password; //  Поле для хранения пароля пользователя.
 
     /**
      * Роль пользователя.

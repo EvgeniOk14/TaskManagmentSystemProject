@@ -29,6 +29,8 @@ public class JwtAuthenticationEntryPoint implements AuthenticationEntryPoint
     /**
      * Выполняет обработку неавторизованного запроса.
      * Отправляет клиенту ответ с кодом 401 (Unauthorized).
+     * Метод вызывается каждый раз, когда пользователь пытается получить доступ к защищенному ресурсу
+     * без необходимой аутентификации.
      *
      * @param request       HTTP-запрос
      * @param response      HTTP-ответ

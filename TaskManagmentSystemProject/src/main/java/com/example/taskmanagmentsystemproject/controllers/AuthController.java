@@ -49,7 +49,6 @@ import org.springframework.web.bind.annotation.*;
  * - @RestController: указывает, что класс является REST контроллером.
  * - @RequestMapping("/auth"): задает базовый путь для всех endpoints в этом контроллере.
  */
-
 @RestController
 @RequestMapping("/auth")
 public class AuthController
@@ -97,12 +96,13 @@ public class AuthController
         String password = loginRequest.getPassword(); // Извлечение пароля из тела запроса loginRequest
 
         // Аутентификация пользователя:
-        User user = userService.authenticate(email, password); // Аутентифицируем пользователя с помощью сервиса.
+        User user = userService.authenticate(email, password); // находим (аутентифицируем) пользователя user, с помощью метода authenticate, сервиса userService.
 
         if (user != null) // Если пользователь найден и аутентифицирован, то:
         {
             // Обновляем или генерируем новый токен для пользователя:
             JwtToken jwtToken = jwtTokenService.refreshToken(user); // Пытаемся обновить существующий токен.
+
             if (jwtToken == null) // Если обновление токена невозможно (например, он равен null, он не истек), то:
             {
                 jwtToken = jwtTokenService.generateAndSaveToken(user); // Генерируем новый токен.

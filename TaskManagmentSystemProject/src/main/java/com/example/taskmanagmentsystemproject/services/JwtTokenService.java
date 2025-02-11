@@ -152,6 +152,7 @@ public class JwtTokenService
         try
         {
             Optional<JwtToken> existingToken = getTokenByUserId(user.getId()); // Получение текущего токена пользователя
+
             if (existingToken.isPresent()) // Если токен существует, то:
             {
                 JwtToken jwtToken = existingToken.get(); // получаем существующий токен
